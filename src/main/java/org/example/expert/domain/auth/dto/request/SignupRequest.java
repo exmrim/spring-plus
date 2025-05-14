@@ -17,4 +17,7 @@ public class SignupRequest {
     private String password;
     @NotBlank
     private String userRole;
+    //Lv1-2. 코드 추가 퀴즈 - JWT의 이해
+    @NotBlank
+    private String nickname;
 }
