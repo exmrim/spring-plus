@@ -69,9 +69,9 @@ class TodoControllerTest {
 
         // then
         mockMvc.perform(get("/todos/{todoId}", todoId))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.status").value(HttpStatus.OK.name()))
-                .andExpect(jsonPath("$.code").value(HttpStatus.OK.value()))
+                .andExpect(status().isBadRequest()) //Lv1-4. 테스트 코드 퀴즈 - 컨트롤러 테스트의 이해
+                .andExpect(jsonPath("$.status").value(HttpStatus.BAD_REQUEST.name())) //Lv1-4. 테스트 코드 퀴즈 - 컨트롤러 테스트의 이해
+                .andExpect(jsonPath("$.code").value(HttpStatus.BAD_REQUEST.value())) //Lv1-4. 테스트 코드 퀴즈 - 컨트롤러 테스트의 이해
                 .andExpect(jsonPath("$.message").value("Todo not found"));
     }
 }
