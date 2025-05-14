@@ -23,6 +23,8 @@ public class UserAdminService {
     public void changeUserRole(Long actorId, long userId, UserRoleChangeRequest userRoleChangeRequest) {
         User user = userRepository.findById(userId).orElseThrow(() -> new InvalidRequestException("User not found"));
 
+        user.updateRole(UserRole.of(userRoleChangeRequest.getRole()));
+
         //Lv3-11.Transaction 심화
         Log log = new Log(
                 ActionType.UPDATE,
@@ -35,7 +37,5 @@ public class UserAdminService {
         );
 
         LogContext.set(log);
-
-        user.updateRole(UserRole.of(userRoleChangeRequest.getRole()));
     }
 }
