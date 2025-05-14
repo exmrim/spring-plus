@@ -1,6 +1,10 @@
 package org.example.expert.domain.user.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.expert.aop.LogContext;
+import org.example.expert.aop.service.LogService;
+import org.example.expert.aop.entity.ActionType;
+import org.example.expert.aop.entity.Log;
 import org.example.expert.domain.common.exception.InvalidRequestException;
 import org.example.expert.domain.user.dto.request.UserRoleChangeRequest;
 import org.example.expert.domain.user.entity.User;
@@ -16,8 +20,22 @@ public class UserAdminService {
     private final UserRepository userRepository;
 
     @Transactional
-    public void changeUserRole(long userId, UserRoleChangeRequest userRoleChangeRequest) {
+    public void changeUserRole(Long actorId, long userId, UserRoleChangeRequest userRoleChangeRequest) {
         User user = userRepository.findById(userId).orElseThrow(() -> new InvalidRequestException("User not found"));
+
+        //Lv3-11.Transaction 심화
+        Log log = new Log(
+                ActionType.UPDATE,
+                "user",
+                userId,
+                actorId,
+                user.getUserRole().name(),
+                userRoleChangeRequest.getRole(),
+                null
+        );
+
+        LogContext.set(log);
+
         user.updateRole(UserRole.of(userRoleChangeRequest.getRole()));
     }
 }
